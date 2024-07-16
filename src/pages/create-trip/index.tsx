@@ -2,8 +2,19 @@ import { Button } from '@/components/ui/button';
 import { DatePickerWithRange } from './date-range-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import React from 'react';
+import { DateRange } from 'react-day-picker';
+import { addDays } from 'date-fns';
+import { ConfirmTripModal } from './confirm-trip-modal';
 
 export function CreateTripPage() {
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 2),
+  });
+
+  const [showModal, setShowModal] = React.useState(false);
+
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-6 px-4">
       <header className="space-y-4">
@@ -19,11 +30,12 @@ export function CreateTripPage() {
             <Input id="where" placeholder="Where are you going?" />
           </Label>
           <Label htmlFor="when">
-            <DatePickerWithRange />
+            <DatePickerWithRange date={date} setDate={setDate} />
           </Label>
           <Button type="submit">Create Trip</Button>
         </form>
       </article>
+      {showModal && <ConfirmTripModal />}
     </main>
   );
 }
