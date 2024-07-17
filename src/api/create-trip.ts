@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios';
 
-export interface CreateInviteMutation {
+export interface CreateTripsMutation {
   destination: string;
   starts_at: string;
   ends_at: string;
@@ -9,15 +9,15 @@ export interface CreateInviteMutation {
   emails_to_invite: string[];
 }
 
-export async function createInvites({
+export async function createTrip({
   destination,
   starts_at,
   ends_at,
   owner_name,
   owner_email,
   emails_to_invite,
-}: CreateInviteMutation) {
-  const response = await api.post<CreateInviteMutation>('/trips', {
+}: CreateTripsMutation) {
+  const response = await api.post<CreateTripsMutation>('/trips', {
     body: {
       destination,
       starts_at,
