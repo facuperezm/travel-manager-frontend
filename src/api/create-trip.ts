@@ -9,24 +9,19 @@ export interface CreateTripsMutation {
   emails_to_invite: string[];
 }
 
-export async function createTrip({
-  destination,
-  starts_at,
-  ends_at,
-  owner_name,
-  owner_email,
-  emails_to_invite,
-}: CreateTripsMutation) {
-  const response = await api.post<CreateTripsMutation>('/trips', {
-    body: {
-      destination,
-      starts_at,
-      ends_at,
-      owner_name,
-      owner_email,
-      emails_to_invite,
-    },
-  });
+export interface CreateTripResponse {
+  tripId: string;
+}
 
-  return response.data;
+export async function createTrip(
+  input: CreateTripsMutation
+): Promise<CreateTripResponse> {
+  try {
+    const response = await api.post<CreateTripResponse>('/trips', input);
+    return response.data;
+  } catch (error) {
+    // Handle or throw the error appropriately
+    console.error('Failed to create trip', error);
+    throw error;
+  }
 }

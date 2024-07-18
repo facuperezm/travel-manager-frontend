@@ -1,6 +1,7 @@
-import { X, AtSign, Plus } from 'lucide-react';
+import { X } from 'lucide-react';
 import { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface InviteParticipantsModalProps {
   closeGuestsModal: () => void;
@@ -20,7 +21,7 @@ export function InviteParticipants({
       <div className="shadow-shape w-[640px] space-y-5 rounded-xl bg-zinc-900 px-6 py-5">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h2 className="font-lg font-semibold">Invite participants</h2>
+            <h2 className="text-lg font-semibold">Invite participants</h2>
             <button>
               <X className="size-5 text-zinc-400" onClick={closeGuestsModal} />
             </button>
@@ -39,7 +40,7 @@ export function InviteParticipants({
                 key={email}
                 className="flex items-center gap-2 rounded-md bg-zinc-800 px-2.5 py-1.5"
               >
-                <span className="text-zinc-300">{email}</span>
+                <span className="text-sm text-zinc-300">{email}</span>
                 <button type="button">
                   <X
                     onClick={() => removeEmailFromInvites(email)}
@@ -51,25 +52,20 @@ export function InviteParticipants({
           })}
         </div>
 
-        <div className="h-px w-full bg-zinc-800" />
-
         <form
           onSubmit={addNewEmailToInvite}
-          className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-950 p-2.5"
+          className="flex items-center gap-2 "
         >
-          <div className="flex flex-1 items-center gap-2 px-2">
-            <AtSign className="size-5 text-zinc-400" />
-            <input
+          <div className="flex flex-1 items-center gap-2">
+            <Input
               type="email"
               name="email"
               placeholder="Email address to invite"
-              className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              className="flex-1 bg-transparent text-sm placeholder-zinc-400 outline-none"
             />
           </div>
 
-          <Button type="submit">
-            Invite <Plus className="size-5" />
-          </Button>
+          <Button type="submit">Invite</Button>
         </form>
       </div>
     </div>
