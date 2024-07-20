@@ -10,8 +10,10 @@ import { DateRange } from 'react-day-picker';
 import { ConfirmTripModal } from './confirm-trip-modal';
 import { DatePickerWithRange } from './date-range-picker';
 import { InviteParticipants } from './invite-participants';
+import { useNavigate } from 'react-router-dom';
 
 export function CreateTripPage() {
+  const navigate = useNavigate();
   const [eventStartAndEndDates, setEventStartAndEndDates] = React.useState<
     DateRange | undefined
   >({
@@ -51,20 +53,20 @@ export function CreateTripPage() {
     mutationFn: createTrip,
     onSuccess: () => {
       // NAVIGATE TO TRIP PAGE
-
-      console.log('Trip created');
+      navigate(`/trips/${tripId}`);
     },
   });
 
   async function startTrip() {
     event?.preventDefault();
+
     const res = await mutateAsync({
-      destination: 'Bariloche',
+      destination: destination,
       starts_at: eventStartAndEndDates?.from!.toString() ?? '',
       ends_at: eventStartAndEndDates?.to!.toString() ?? '',
-      owner_name: 'pepe',
-      owner_email: 'argento@pepe.com',
-      emails_to_invite: ['pepito@pepe.com', 'pepe@pepe.com'],
+      owner_name: ownerName,
+      owner_email: ownerEmail,
+      emails_to_invite: emailsToInvite,
     });
 
     console.log(res);
