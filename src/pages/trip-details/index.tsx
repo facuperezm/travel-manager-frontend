@@ -1,7 +1,15 @@
 import { getTripDetails } from '@/api/get-trip-details';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { Copy, CreditCard, MoreVertical, Truck } from 'lucide-react';
+import {
+  Copy,
+  CreditCard,
+  MoreVertical,
+  PersonStanding,
+  Plus,
+  PlusCircleIcon,
+  Truck,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +28,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
-import { format } from 'date-fns/format';
+import { format } from 'date-fns';
+import { getActivities } from '@/api/get-activities';
 
 export function TripDetailsPage() {
   const { tripId } = useParams();
@@ -34,8 +43,28 @@ export function TripDetailsPage() {
     queryFn: () => getTripDetails({ tripId }),
   });
 
+  const fromData = data?.trip.starts_at
+    ? format(new Date(data.trip.starts_at), 'LLLL dd')
+    : 'N/A';
+
+  const toData = data?.trip.ends_at
+    ? format(new Date(data.trip.ends_at), 'LLLL dd')
+    : 'N/A';
+
+  const { data: activities } = useQuery({
+    queryKey: ['trip', 'activities'],
+    queryFn: () => getActivities({ tripId }),
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: createActivity,
+  });
+  // console.log(fromData);
   return (
-    <>
+    <main>
+      <article>
+        <div className="space-y-8">{JSON.stringify(activities, null, 2)}</div>
+      </article>
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-start bg-muted/50">
           <div className="grid gap-0.5">
@@ -47,19 +76,18 @@ export function TripDetailsPage() {
                 className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
               >
                 <Copy className="h-3 w-3" />
-                <span className="sr-only">Copy Order ID</span>
+                <span className="sr-only">Invite friends</span>
               </Button>
             </CardTitle>
             <CardDescription>
-              From {format(data?.trip.starts_at!, 'LLLL dd')} to{' '}
-              {format(data?.trip.ends_at!, 'LLLL dd')}
+              From {fromData} to {toData}
             </CardDescription>
           </div>
           <div className="ml-auto flex items-center gap-1">
             <Button size="sm" variant="outline" className="h-8 gap-1">
-              <Truck className="h-3.5 w-3.5" />
+              <Plus className="h-3.5 w-3.5" />
               <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                Track Order
+                Invite more friends
               </span>
             </Button>
             <DropdownMenu>
@@ -70,10 +98,10 @@ export function TripDetailsPage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Export</DropdownMenuItem>
+                <DropdownMenuItem>Add more activities</DropdownMenuItem>
+                <DropdownMenuItem>Add more urls</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Trash</DropdownMenuItem>
+                <DropdownMenuItem>Cancel trip</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -168,12 +196,9 @@ export function TripDetailsPage() {
             </dl>
           </div>
         </CardContent>
-        <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-          <div className="text-xs text-muted-foreground">
-            Updated <time dateTime="2023-11-23">November 23, 2023</time>
-          </div>
-        </CardFooter>
       </Card>
-    </>
+      {JSON.stringify(data, null, 2)}
+      {tripId}
+    </main>
   );
 }

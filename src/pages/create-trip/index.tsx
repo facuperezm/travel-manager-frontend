@@ -51,10 +51,6 @@ export function CreateTripPage() {
 
   const { mutateAsync } = useMutation({
     mutationFn: createTrip,
-    onSuccess: () => {
-      // NAVIGATE TO TRIP PAGE
-      navigate(`/trips/${tripId}`);
-    },
   });
 
   async function startTrip() {
@@ -70,6 +66,7 @@ export function CreateTripPage() {
     });
 
     console.log(res);
+    navigate(`/trips/${res.tripId}`);
   }
 
   function openConfirmTripModal() {
