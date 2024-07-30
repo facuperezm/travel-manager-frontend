@@ -3,19 +3,21 @@ import { api } from '@/lib/axios';
 export interface CreateActivityMutation {
   title: string;
   occurs_at: string;
+  tripId: string;
 }
 
 export interface CreateActivityResponse {
   activity: string;
 }
 
-export async function createTrip({
+export async function createActivity({
   title,
   occurs_at,
+  tripId,
 }: CreateActivityMutation): Promise<CreateActivityResponse> {
   try {
     const response = await api.post<CreateActivityResponse>(
-      `/trips/${tripId}`,
+      `/trips/${tripId}/activities`,
       { title, occurs_at }
     );
     return response.data;

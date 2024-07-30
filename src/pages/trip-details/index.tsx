@@ -1,5 +1,5 @@
 import { getTripDetails } from '@/api/get-trip-details';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import {
   Copy,
@@ -30,9 +30,10 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
 import { getActivities } from '@/api/get-activities';
+import { createActivity } from '@/api/create-activity';
 
 export function TripDetailsPage() {
-  const { tripId } = useParams();
+  const { tripId } = useParams<{ tripId: string }>();
 
   if (!tripId) {
     return null;
@@ -59,7 +60,16 @@ export function TripDetailsPage() {
   const { mutateAsync } = useMutation({
     mutationFn: createActivity,
   });
-  // console.log(fromData);
+
+  async function addActivity() {
+    const res = await mutateAsync({
+      tripId,
+      title: 'New Activity',
+      occursAt: new Date().toISOString(),
+    });
+    console.log(res);
+  }
+
   return (
     <main>
       <article>
@@ -73,6 +83,7 @@ export function TripDetailsPage() {
               <Button
                 size="icon"
                 variant="outline"
+                onClick={addActivity}
                 className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
               >
                 <Copy className="h-3 w-3" />
