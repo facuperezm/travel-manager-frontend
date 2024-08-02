@@ -6,10 +6,12 @@ export interface GetActivitiesQuery {
 
 export interface GetActivitiesResponse {
   activities: {
-    id: string;
-    title: string;
-    occurs_at: string;
-    trip_id: string;
+    date: string;
+    activities: {
+      id: string;
+      title: string;
+      occurs_at: string;
+    }[];
   }[];
 }
 
