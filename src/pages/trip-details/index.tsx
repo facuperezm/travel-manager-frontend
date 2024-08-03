@@ -80,7 +80,7 @@ export function TripDetailsPage() {
             <p className="text-sm text-zinc-300">
               From {fromData} to {toData}
             </p>
-            <Button variant="outlined">Add new activity</Button>
+            <Button variant="outline">Add new activity</Button>
           </div>
         </div>
       </header>
@@ -130,31 +130,6 @@ export function TripDetailsPage() {
         </div>
         <div>
           <article className="space-y-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Activities</CardTitle>
-                <CardDescription>
-                  This is a list of activities that are planned for this trip.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul>
-                  {activities &&
-                    activities.activities.map((activity) => (
-                      <li
-                        key={activity.id}
-                        className="flex items-center justify-between"
-                      >
-                        <span>{activity.title}</span>
-                        <span>{activity.occurs_at}</span>
-                      </li>
-                    ))}
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button>Add new activity</Button>
-              </CardFooter>
-            </Card>
             <Card>
               <CardHeader>
                 <CardTitle>Important links</CardTitle>
