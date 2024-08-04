@@ -6,20 +6,16 @@ export interface CreateActivityMutation {
   tripId: string;
 }
 
-export interface CreateActivityResponse {
-  activity: string;
-}
-
 export async function createActivity({
   title,
   occurs_at,
   tripId,
-}: CreateActivityMutation): Promise<CreateActivityResponse> {
+}: CreateActivityMutation) {
   try {
-    const response = await api.post<CreateActivityResponse>(
-      `/trips/${tripId}/activities`,
-      { title, occurs_at }
-    );
+    const response = await api.post(`/trips/${tripId}/activities`, {
+      title,
+      occurs_at,
+    });
     return response.data;
   } catch (error) {
     // Handle or throw the error appropriately

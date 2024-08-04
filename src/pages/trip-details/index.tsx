@@ -1,17 +1,7 @@
 import { getTripDetails } from '@/api/get-trip-details';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Link, useParams } from 'react-router-dom';
-import {
-  CircleCheck,
-  Copy,
-  CreditCard,
-  Link2,
-  MoreVertical,
-  PersonStanding,
-  Plus,
-  PlusCircleIcon,
-  Truck,
-} from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { CircleCheck, Link2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -22,14 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
 import { getActivities } from '@/api/get-activities';
 import { createActivity } from '@/api/create-activity';
@@ -59,17 +41,13 @@ export function TripDetailsPage() {
     queryFn: () => getActivities({ tripId }),
   });
 
-  const { mutateAsync } = useMutation({
-    mutationFn: createActivity,
-  });
-  async function addActivity() {
-    const res = await mutateAsync({
-      tripId,
-      title: 'New Activity',
-      occursAt: new Date().toISOString(),
-    });
-    console.log(res);
-  }
+  // async function addActivity() {
+  //   const res = await mutateAsync({
+  //     tripId,
+  //     title: 'New Activity',
+  //     occursAt: fromData,
+  //   });
+  // }
 
   return (
     <div className="space-y-4">
@@ -80,7 +58,6 @@ export function TripDetailsPage() {
             <p className="text-sm text-zinc-300">
               From {fromData} to {toData}
             </p>
-            <Button variant="outline">Add new activity</Button>
           </div>
         </div>
       </header>
