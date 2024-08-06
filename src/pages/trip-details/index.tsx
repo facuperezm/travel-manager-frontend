@@ -1,5 +1,5 @@
 import { getTripDetails } from '@/api/get-trip-details';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { CircleCheck, Link2 } from 'lucide-react';
 
@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { getActivities } from '@/api/get-activities';
-import { createActivity } from '@/api/create-activity';
+import CreateActivityModal from './create-activity-modal';
 
 export function TripDetailsPage() {
   const { tripId } = useParams<{ tripId: string }>();
@@ -58,6 +58,7 @@ export function TripDetailsPage() {
             <p className="text-sm text-zinc-300">
               From {fromData} to {toData}
             </p>
+            <CreateActivityModal />
           </div>
         </div>
       </header>
