@@ -62,6 +62,7 @@ export function TripDetailsPage() {
           </div>
         </div>
       </header>
+      {/* <pre>{activities && JSON.stringify(activities, null, 2)}</pre> */}
       <main className="mx-auto flex max-w-5xl space-x-4 px-4">
         <div className="flex-1">
           <article>
@@ -78,7 +79,7 @@ export function TripDetailsPage() {
                       </span>
                     </div>
                     {category.activities.length > 0 ? (
-                      <div>
+                      <div className="space-y-2">
                         {category.activities.map((activity) => {
                           return (
                             <div key={activity.id} className="space-y-2.5">
