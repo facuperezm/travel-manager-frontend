@@ -62,7 +62,6 @@ export function TripDetailsPage() {
           </div>
         </div>
       </header>
-      {/* <pre>{activities && JSON.stringify(activities, null, 2)}</pre> */}
       <main className="mx-auto flex max-w-5xl space-x-4 px-4">
         <div className="flex-1">
           <article>
