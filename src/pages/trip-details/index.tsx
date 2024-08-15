@@ -54,7 +54,7 @@ export function TripDetailsPage() {
       <header className="mt-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between rounded bg-secondary/50 px-4 py-2">
           <h1 className="text-xl">Trip to {data?.trip.destination}</h1>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <p className="text-sm text-zinc-300">
               From {fromData} to {toData}
             </p>
@@ -151,7 +151,7 @@ export function TripDetailsPage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button>Add new activity</Button>
+                <Button>Add new link</Button>
               </CardFooter>
             </Card>
           </article>

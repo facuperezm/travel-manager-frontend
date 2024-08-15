@@ -58,14 +58,18 @@ export default function CreateActivityModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: '',
+      date: new Date(),
       time: '',
       name: '',
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(`${values.date}T${values.time}Z`);
-    console.log(values);
+    console.log();
+    const [hours, minutes] = values.time
+      .split(':')
+      .map((str) => parseInt(str, 10));
+    console.log(hours, minutes);
   }
   return (
     <Dialog>
@@ -184,10 +188,26 @@ export default function CreateActivityModal() {
                   </FormItem>
                 )}
               />
-              <input
-                type="time"
-                value={timeValue}
-                onChange={handleTimeChange}
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Time</FormLabel>
+                    <FormControl>
+                      {/* <Input placeholder="Go to the beach" {...field} /> */}
+                      <Input
+                        type="time"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This is the name of the activity.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
 
               <Button type="submit">Submit</Button>
