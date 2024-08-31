@@ -107,7 +107,7 @@ export function TripDetailsPage() {
           </article>
         </div>
         <div>
-          <article className="space-y-2">
+          <article className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle>Important links</CardTitle>
@@ -153,6 +153,28 @@ export function TripDetailsPage() {
               <CardFooter>
                 <Button>Add new link</Button>
               </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Participants</CardTitle>
+                <CardDescription>
+                  People who are going to your trip
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-4">
+                  <li className="flex items-center justify-between gap-4">
+                    <div className="space-y-1.5">
+                      <span className="block font-medium text-zinc-100">
+                        Facundo
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        facundo@test.com
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
           </article>
         </div>
