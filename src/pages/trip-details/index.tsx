@@ -62,7 +62,7 @@ export function TripDetailsPage() {
           </div>
         </div>
       </header>
-      <main className="mx-auto flex max-w-5xl space-x-4 px-4">
+      <main className="mx-auto flex max-w-5xl flex-col-reverse gap-6 px-4 sm:flex-row">
         <div className="flex-1">
           <article>
             <div className="space-y-8">
@@ -118,35 +118,33 @@ export function TripDetailsPage() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4">
-                  <li className="flex items-center justify-between gap-4">
-                    <div className="space-y-1.5">
-                      <span className="block font-medium text-zinc-100">
+                  <li className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-zinc-100">
                         Reserva de hotel
                       </span>
-                      <a
-                        href="#"
-                        className="block truncate text-xs text-zinc-400 hover:text-zinc-200"
-                      >
-                        https://www.booking.com/104700011390
-                      </a>
+                      <Link2 className="size-5 shrink-0 text-zinc-400" />
                     </div>
-
-                    <Link2 className="size-5 shrink-0 text-zinc-400" />
+                    <a
+                      href="#"
+                      className="block truncate text-xs text-zinc-400 hover:text-zinc-200"
+                    >
+                      https://www.booking.com/104700011390
+                    </a>
                   </li>
-                  <li className="flex items-center justify-between gap-4">
-                    <div className="space-y-1.5">
-                      <span className="block font-medium text-zinc-100">
+                  <li className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-zinc-100">
                         Reserva de hotel
                       </span>
-                      <a
-                        href="#"
-                        className="block truncate text-xs text-zinc-400 hover:text-zinc-200"
-                      >
-                        https://www.booking.com/104700011390
-                      </a>
+                      <Link2 className="size-5 shrink-0 text-zinc-400" />
                     </div>
-
-                    <Link2 className="size-5 shrink-0 text-zinc-400" />
+                    <a
+                      href="#"
+                      className="block truncate text-xs text-zinc-400 hover:text-zinc-200"
+                    >
+                      https://www.booking.com/104700011390
+                    </a>
                   </li>
                 </ul>
               </CardContent>
@@ -162,9 +160,19 @@ export function TripDetailsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-4">
+                <ul className="space-y-2">
                   <li className="flex items-center justify-between gap-4">
-                    <div className="space-y-1.5">
+                    <div className="space-y-1">
+                      <span className="block font-medium text-zinc-100">
+                        Facundo
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        facundo@test.com
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex items-center justify-between gap-4">
+                    <div className="space-y-1">
                       <span className="block font-medium text-zinc-100">
                         Facundo
                       </span>
