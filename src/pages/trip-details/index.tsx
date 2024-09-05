@@ -40,14 +40,26 @@ export function TripDetailsPage() {
     queryKey: ['trip', 'activities'],
     queryFn: () => getActivities({ tripId }),
   });
+  const { mutateAsync, isLoading, error } = useMutation({
+    mutationFn: addActivity,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['trip', 'activities']);
+    },
+  });
 
-  // async function addActivity() {
-  //   const res = await mutateAsync({
-  //     tripId,
-  //     title: 'New Activity',
-  //     occursAt: fromData,
-  //   });
-  // }
+  async function addActivity(activityData: {
+    tripId: string;
+    title: string;
+    occursAt: string;
+  }) {
+    try {
+      const res = await mutateAsync(activityData);
+      return res;
+    } catch (error) {
+      console.error('Error adding activity:', error);
+      throw error;
+    }
+  }
 
   return (
     <div className="space-y-4">

@@ -80,7 +80,8 @@ export default function CreateActivityModal() {
         <DialogHeader>
           <DialogTitle>Add an activity to your trip</DialogTitle>
           <DialogDescription>
-            Here you'll be able to add activities to your trip
+            Add an activity to your trip. This could be anything from going to
+            the beach to visiting a museum.
           </DialogDescription>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
