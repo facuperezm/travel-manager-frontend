@@ -1,5 +1,5 @@
 import { getTripDetails } from '@/api/get-trip-details';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { CircleCheck, Link2 } from 'lucide-react';
 
@@ -12,9 +12,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { getActivities } from '@/api/get-activities';
 import CreateActivityModal from './create-activity-modal';
+import { queryClient } from '@/lib/react-query';
+import { createActivity } from '@/api/create-activity';
 
 export function TripDetailsPage() {
   const { tripId } = useParams<{ tripId: string }>();
@@ -24,7 +26,7 @@ export function TripDetailsPage() {
   }
 
   const { data } = useQuery({
-    queryKey: ['trip'],
+    queryKey: ['trip', tripId],
     queryFn: () => getTripDetails({ tripId }),
   });
 
@@ -37,27 +39,29 @@ export function TripDetailsPage() {
     : 'N/A';
 
   const { data: activities } = useQuery({
-    queryKey: ['trip', 'activities'],
+    queryKey: ['activities', tripId],
     queryFn: () => getActivities({ tripId }),
   });
-  const { mutateAsync, isLoading, error } = useMutation({
-    mutationFn: addActivity,
-    onSuccess: () => {
-      queryClient.invalidateQueries(['trip', 'activities']);
+
+  const { mutateAsync } = useMutation({
+    mutationFn: createActivity,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['activities', tripId] });
     },
   });
 
   async function addActivity(activityData: {
-    tripId: string;
     title: string;
-    occursAt: string;
+    occurs_at: string;
   }) {
+    if (!tripId) return;
     try {
-      const res = await mutateAsync(activityData);
-      return res;
+      await mutateAsync({
+        ...activityData,
+        tripId,
+      });
     } catch (error) {
-      console.error('Error adding activity:', error);
-      throw error;
+      console.error('Error al añadir actividad:', error);
     }
   }
 
@@ -70,7 +74,7 @@ export function TripDetailsPage() {
             <p className="text-sm text-zinc-300">
               From {fromData} to {toData}
             </p>
-            <CreateActivityModal />
+            <CreateActivityModal tripId={tripId} onAddActivity={addActivity} />
           </div>
         </div>
       </header>
@@ -96,11 +100,20 @@ export function TripDetailsPage() {
                             <div key={activity.id} className="space-y-2.5">
                               <div className="shadow-shape flex items-center gap-3 rounded-xl bg-zinc-900 px-4 py-2.5">
                                 <CircleCheck className="size-5 text-lime-300" />
-                                <span className="text-zinc-100">
+                                <span
+                                  className={
+                                    new Date(activity.occurs_at) < new Date()
+                                      ? 'text-zinc-400 line-through'
+                                      : 'text-zinc-100'
+                                  }
+                                >
                                   {activity.title}
                                 </span>
                                 <span className="ml-auto text-sm text-zinc-400">
-                                  {format(activity.occurs_at, 'HH:mm')}h
+                                  {format(
+                                    parseISO(activity.occurs_at),
+                                    "HH:mm'h'"
+                                  )}
                                 </span>
                               </div>
                             </div>

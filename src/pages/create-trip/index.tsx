@@ -53,20 +53,21 @@ export function CreateTripPage() {
     mutationFn: createTrip,
   });
 
-  async function startTrip() {
+  async function startTrip(event: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-
-    const res = await mutateAsync({
-      destination: destination,
-      starts_at: eventStartAndEndDates?.from!.toString() ?? '',
-      ends_at: eventStartAndEndDates?.to!.toString() ?? '',
-      owner_name: ownerName,
-      owner_email: ownerEmail,
-      emails_to_invite: emailsToInvite,
-    });
-
-    console.log(res);
-    navigate(`/trips/${res.tripId}`);
+    try {
+      const res = await mutateAsync({
+        destination: destination,
+        starts_at: eventStartAndEndDates?.from!.toString() ?? '',
+        ends_at: eventStartAndEndDates?.to!.toString() ?? '',
+        owner_name: ownerName,
+        owner_email: ownerEmail,
+        emails_to_invite: emailsToInvite,
+      });
+      navigate(`/trips/${res.tripId}`);
+    } catch (error) {
+      console.error('Error al crear el viaje:', error);
+    }
   }
 
   function openConfirmTripModal() {
