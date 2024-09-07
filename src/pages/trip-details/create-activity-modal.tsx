@@ -10,7 +10,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -88,98 +87,91 @@ export default function CreateActivityModal({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Date of the activity</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={'outline'}
-                          className={cn(
-                            'w-[240px] pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, 'PPP')
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        today={
-                          data?.trip?.starts_at
-                            ? new Date(data.trip.starts_at)
-                            : undefined
-                        }
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date(data?.trip?.ends_at ?? '') ||
-                          date < new Date(data?.trip?.starts_at ?? '')
-                        }
-                        fromDate={
-                          data?.trip?.starts_at
-                            ? new Date(data.trip.starts_at)
-                            : undefined
-                        }
-                        toDate={
-                          data?.trip?.ends_at
-                            ? new Date(data.trip.ends_at)
-                            : undefined
-                        }
-                        initialFocus
+            <div className="flex gap-2">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={'outline'}
+                            className={cn(
+                              'w-[200px] pl-3 text-left font-normal',
+                              !field.value && 'text-muted-foreground'
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, 'PPP')
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          today={
+                            data?.trip?.starts_at
+                              ? new Date(data.trip.starts_at)
+                              : undefined
+                          }
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date(data?.trip?.ends_at ?? '') ||
+                            date < new Date(data?.trip?.starts_at ?? '')
+                          }
+                          fromDate={
+                            data?.trip?.starts_at
+                              ? new Date(data.trip.starts_at)
+                              : undefined
+                          }
+                          toDate={
+                            data?.trip?.ends_at
+                              ? new Date(data.trip.ends_at)
+                              : undefined
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Time</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        value={field.value}
+                        onChange={field.onChange}
                       />
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription>
-                    This is the date of the activity.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Activity name</FormLabel>
                   <FormControl>
                     <Input placeholder="Go to the beach" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is the name of the activity.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="time"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Time</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="time"
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    This is the time of the activity.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
