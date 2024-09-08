@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Circle, CircleCheck, CircleDashed, Link2 } from 'lucide-react';
+import { CircleCheck, CircleDashed, Link2 } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 
 import { getTripDetails } from '@/api/get-trip-details';
@@ -7,6 +7,7 @@ import { createActivity } from '@/api/create-activity';
 import { getActivities } from '@/api/get-activities';
 import { getTripParticipants } from '@/api/get-trip-participants';
 import { getLinks } from '@/api/get-links';
+import { createLink } from '@/api/create-link';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -19,6 +20,7 @@ import {
 import { queryClient } from '@/lib/react-query';
 import { format, parseISO } from 'date-fns';
 import CreateActivityModal from './create-activity-modal';
+import CreateLinkModal from './create-link-modal';
 import { cn } from '@/lib/utils';
 
 export function TripDetailsPage() {
@@ -67,6 +69,25 @@ export function TripDetailsPage() {
     ? format(new Date(tripDetails.trip.ends_at), 'LLLL dd')
     : 'N/A';
 
+  const { mutateAsync: createLinkMutation } = useMutation({
+    mutationFn: createLink,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['links', tripId] });
+    },
+  });
+
+  async function addLink(linkData: { title: string; date: Date; url: string }) {
+    if (!tripId) return;
+    try {
+      await createLinkMutation({
+        ...linkData,
+        tripId,
+      });
+    } catch (error) {
+      console.error('Error adding link', error);
+    }
+  }
+
   async function addActivity(activityData: {
     title: string;
     occurs_at: string;
@@ -92,6 +113,7 @@ export function TripDetailsPage() {
               From {fromData} to {toData}
             </p>
             <CreateActivityModal tripId={tripId} onAddActivity={addActivity} />
+            <CreateLinkModal tripId={tripId} onAddLink={addLink} />
           </div>
         </div>
       </header>
