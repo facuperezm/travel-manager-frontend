@@ -75,7 +75,7 @@ export default function CreateActivityModal({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add activity</Button>
+        <Button size="sm">Add activity</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
