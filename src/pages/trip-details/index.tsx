@@ -8,7 +8,6 @@ import { getActivities } from '@/api/get-activities';
 import { getTripParticipants } from '@/api/get-trip-participants';
 import { getLinks } from '@/api/get-links';
 import { createLink } from '@/api/create-link';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -45,8 +44,6 @@ export function TripDetailsPage() {
     queryFn: () => getLinks({ tripId }),
   });
 
-  console.log(links);
-
   const { data: participants } = useQuery({
     queryKey: ['participants', tripId],
     queryFn: () => getTripParticipants({ tripId }),
@@ -76,7 +73,7 @@ export function TripDetailsPage() {
     },
   });
 
-  async function addLink(linkData: { title: string; date: Date; url: string }) {
+  async function addLink(linkData: { title: string; url: string }) {
     if (!tripId) return;
     try {
       await createLinkMutation({
@@ -84,7 +81,7 @@ export function TripDetailsPage() {
         tripId,
       });
     } catch (error) {
-      console.error('Error adding link', error);
+      console.error('Error al añadir enlace', error);
     }
   }
 
@@ -113,7 +110,6 @@ export function TripDetailsPage() {
               From {fromData} to {toData}
             </p>
             <CreateActivityModal tripId={tripId} onAddActivity={addActivity} />
-            <CreateLinkModal tripId={tripId} onAddLink={addLink} />
           </div>
         </div>
       </header>
@@ -125,7 +121,7 @@ export function TripDetailsPage() {
                 <div key={category.date} className="space-y-2">
                   <div className="flex items-baseline gap-2">
                     <span className="text-xl font-semibold ">
-                      {format(category.date, 'd/M')}
+                      {format(category.date, 'dd MMM')}
                     </span>
                     <span className="text-xs text-zinc-500">
                       {format(category.date, 'EEEE')}
@@ -172,7 +168,7 @@ export function TripDetailsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Important links</CardTitle>
-              <CardDescription> Links to important resources </CardDescription>
+              <CardDescription>Links to important resources</CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
@@ -194,7 +190,7 @@ export function TripDetailsPage() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button>Add new link</Button>
+              <CreateLinkModal onAddLink={addLink} />
             </CardFooter>
           </Card>
           <Card>
