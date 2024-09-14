@@ -2,19 +2,15 @@ import { api } from '@/lib/axios';
 
 export interface CreateLinkMutation {
   title: string;
-  occurs_at: string;
+  url: string;
   tripId: string;
 }
 
-export async function createLink({
-  title,
-  occurs_at,
-  tripId,
-}: CreateLinkMutation) {
+export async function createLink({ title, url, tripId }: CreateLinkMutation) {
   try {
     const response = await api.post(`/trips/${tripId}/links`, {
       title,
-      occurs_at,
+      url,
     });
     return response.data;
   } catch (error) {
