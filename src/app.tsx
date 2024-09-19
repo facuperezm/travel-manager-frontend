@@ -3,6 +3,9 @@ import { CreateTripPage } from './pages/create-trip';
 import { TripDetailsPage } from './pages/trip-details';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/react-query';
+import { AuthLayout } from './pages/auth';
+import { SignIn } from './pages/auth/sign-in';
+import { SignUp } from './pages/auth/sign-up';
 
 const router = createBrowserRouter([
   {
@@ -12,6 +15,20 @@ const router = createBrowserRouter([
   {
     path: '/trips/:tripId',
     element: <TripDetailsPage />,
+  },
+  {
+    path: '/',
+    element: <AuthLayout />,
+    children: [
+      {
+        path: '/sign-in',
+        element: <SignIn />,
+      },
+      {
+        path: '/sign-up',
+        element: <SignUp />,
+      },
+    ],
   },
 ]);
 
