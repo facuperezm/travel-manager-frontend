@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { CreateTripPage } from './pages/create-trip';
-import { TripDetailsPage } from './pages/trip-details';
+import { CreateTripPage } from '@/pages/create-trip';
+import { TripDetailsPage } from '@/pages/trip-details';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './lib/react-query';
-import { AuthLayout } from './pages/auth';
-import { SignIn } from './pages/auth/sign-in';
-import { SignUp } from './pages/auth/sign-up';
+import { queryClient } from '@/lib/react-query';
+import { AuthLayout } from '@/pages/_layouts/auth';
+import { SignIn } from '@/pages/auth/sign-in';
+import { SignUp } from '@/pages/auth/sign-up';
 
 const router = createBrowserRouter([
   {
