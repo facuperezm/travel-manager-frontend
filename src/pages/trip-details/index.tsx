@@ -49,8 +49,6 @@ export function TripDetailsPage() {
     queryFn: () => getTripParticipants({ tripId }),
   });
 
-  console.log(participants);
-
   const { mutateAsync: createActivityMutation } = useMutation({
     mutationFn: createActivity,
     onSuccess: async () => {
@@ -172,21 +170,29 @@ export function TripDetailsPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
-                {links?.map((link) => (
-                  <li className="space-y-1" key={link.id}>
-                    <a href={link.url} className="truncate text-zinc-400">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-zinc-100">
-                          {link.title}
+                {links && links.length > 0 ? (
+                  links.map((link) => (
+                    <li className="space-y-1" key={link.id}>
+                      <a href={link.url} className="truncate text-zinc-400">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-zinc-100">
+                            {link.title}
+                          </span>
+                          <Link2 className="size-5 shrink-0 text-zinc-400" />
+                        </div>
+                        <span className="text-xs text-zinc-400 hover:text-zinc-200">
+                          {link.url}
                         </span>
-                        <Link2 className="size-5 shrink-0 text-zinc-400" />
-                      </div>
-                      <span className="text-xs text-zinc-400 hover:text-zinc-200">
-                        {link.url}
-                      </span>
-                    </a>
-                  </li>
-                ))}
+                      </a>
+                    </li>
+                  ))
+                ) : (
+                  <div className="flex w-full items-center justify-center rounded-md border border-dashed border-zinc-700 px-2 py-4">
+                    <p className="text-sm text-zinc-500">
+                      No links added for this trip yet.
+                    </p>
+                  </div>
+                )}
               </ul>
             </CardContent>
             <CardFooter>

@@ -21,12 +21,12 @@ export async function getActivities({
   tripId,
 }: GetActivitiesQuery): Promise<GetActivitiesResponse> {
   try {
-    const response = await api.get<{ activities: ActivityGroup[] }>(
+    const response = await api.get<GetActivitiesResponse>(
       `/trips/${tripId}/activities`
     );
-    return response.data.activities; // Devolvemos directamente el array de grupos de actividades
+    return response.data;
   } catch (error) {
     console.error('Error fetching activities:', error);
-    return [];
+    throw error;
   }
 }

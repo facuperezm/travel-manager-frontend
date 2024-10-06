@@ -17,8 +17,8 @@ export async function getLinks({
   tripId,
 }: GetLinksQuery): Promise<GetLinksResponse | null> {
   try {
-    const response = await api.get<{ links: Link[] }>(`/trips/${tripId}/links`);
-    return response.data.links;
+    const response = await api.get<GetLinksResponse>(`/trips/${tripId}/links`);
+    return response.data;
   } catch (error) {
     console.error('Error fetching activities:', error);
     return null;

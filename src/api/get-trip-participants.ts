@@ -17,10 +17,10 @@ export async function getTripParticipants({
   tripId,
 }: GetTripParticipantsQuery): Promise<GetTripParticipantsResponse> {
   try {
-    const response = await api.get<{ participants: Participant[] }>(
+    const response = await api.get<GetTripParticipantsResponse>(
       `/trips/${tripId}/participants`
     );
-    return response.data.participants;
+    return response.data;
   } catch (error) {
     console.error('Error fetching participants:', error);
     return [];
