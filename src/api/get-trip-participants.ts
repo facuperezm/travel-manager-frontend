@@ -9,6 +9,7 @@ export interface Participant {
   name: string;
   email: string;
   is_confirmed: boolean;
+  is_owner: boolean;
 }
 
 export type GetTripParticipantsResponse = Participant[];

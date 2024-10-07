@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { CircleCheck, CircleDashed, Link2 } from 'lucide-react';
+import { CircleCheck, CircleDashed, Link2, Star } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 
 import { getTripDetails } from '@/api/get-trip-details';
@@ -228,6 +228,12 @@ export function TripDetailsPage() {
                           <CircleDashed className="size-5 text-zinc-400" />
                         )}
                         {participant.name}
+                        {participant.is_owner && (
+                          <Star
+                            className="ml-2 h-4 w-4 text-yellow-300"
+                            aria-label="Trip owner"
+                          />
+                        )}
                       </span>
                       <span className="text-xs text-gray-400">
                         {participant.email}
