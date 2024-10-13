@@ -103,7 +103,7 @@ export function CreateTripPage() {
       <div className="w-full max-w-3xl space-y-6 px-6 ">
         <header className="space-y-4">
           <h1 className="text-center text-2xl">
-            Welcome to travel manager app!
+            Welcome to travel manager app
           </h1>
           <h2 className="text-center leading-tight">
             Create a trip by filling out the form below and clicking the "Create
