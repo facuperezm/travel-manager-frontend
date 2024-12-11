@@ -2,7 +2,7 @@
 
 A simple and efficient travel planning application that helps you organize your trips better.
 
-![App Screenshot](./public/screenshot.png)
+![App Screenshot](./screenshot.webp)
 
 ## About the Project
 
