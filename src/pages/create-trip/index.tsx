@@ -11,6 +11,8 @@ import { ConfirmTripModal } from './confirm-trip-modal';
 import { DatePickerWithRange } from './date-range-picker';
 import { InviteParticipants } from './invite-participants';
 import { useNavigate } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
+import { AxiosError } from 'axios';
 
 export function CreateTripPage() {
   const navigate = useNavigate();
@@ -49,7 +51,7 @@ export function CreateTripPage() {
     event.currentTarget.reset();
   }
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: createTrip,
   });
 
@@ -66,7 +68,13 @@ export function CreateTripPage() {
       });
       navigate(`/trips/${res.tripId}`);
     } catch (error) {
-      console.error('Error al crear el viaje:', error);
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorMessage = error.response.data.error;
+        toast({
+          title: 'There was an error creating the trip',
+          description: errorMessage,
+        });
+      }
     }
   }
 
@@ -188,6 +196,7 @@ export function CreateTripPage() {
             eventStartAndEndDates={eventStartAndEndDates}
             destination={destination}
             createTrip={startTrip}
+            isPending={isPending}
             closeConfirmTripModal={closeConfirmTripModal}
             setOwnerEmail={setOwnerEmail}
             setOwnerName={setOwnerName}

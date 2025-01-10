@@ -6,6 +6,7 @@ import { queryClient } from '@/lib/react-query';
 import { AuthLayout } from '@/pages/_layouts/auth';
 import { SignIn } from '@/pages/auth/sign-in';
 import { SignUp } from '@/pages/auth/sign-up';
+import { Toaster } from '@/components/ui/toaster';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ export function App() {
         </div>
       </div>
       <RouterProvider router={router} />
+      <Toaster />
     </QueryClientProvider>
   );
 }
