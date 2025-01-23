@@ -1,3 +1,4 @@
+import React, { useState, useCallback } from 'react';
 import { createTrip } from '@/api/create-trip';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -5,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { useMutation } from '@tanstack/react-query';
 import { addDays } from 'date-fns';
 import { ArrowRight, Settings2, UserRoundPlus } from 'lucide-react';
-import React, { FormEvent } from 'react';
 import { DateRange } from 'react-day-picker';
 import { ConfirmTripModal } from './confirm-trip-modal';
 import { DatePickerWithRange } from './date-range-picker';
@@ -16,99 +16,86 @@ import { AxiosError } from 'axios';
 
 export function CreateTripPage() {
   const navigate = useNavigate();
-  const [eventStartAndEndDates, setEventStartAndEndDates] = React.useState<
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
     DateRange | undefined
   >({
     from: new Date(),
     to: addDays(new Date(), 2),
   });
-  const [destination, setDestination] = React.useState('');
-  const [ownerName, setOwnerName] = React.useState('');
-  const [ownerEmail, setOwnerEmail] = React.useState('');
-  const [emailsToInvite, setEmailsToInvite] = React.useState(['facu@test.com']);
+  const [destination, setDestination] = useState('');
+  const [ownerName, setOwnerName] = useState('');
+  const [ownerEmail, setOwnerEmail] = useState('');
+  const [emailsToInvite, setEmailsToInvite] = useState(['facu@test.com']);
 
-  const [isGuestsInputOpen, setIsGuestsInputOpen] = React.useState(false);
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
-    React.useState(false);
-  const [isDestinationAndDate, setIsDestinationAndDate] = React.useState(false);
+  const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isDestinationAndDate, setIsDestinationAndDate] = useState(false);
 
-  function addNewEmailToInvite(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const addNewEmailToInvite = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const email = data.get('email')?.toString();
 
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email')?.toString();
-
-    if (!email) {
-      return;
-    }
-
-    if (emailsToInvite.includes(email)) {
-      return;
-    }
-
-    setEmailsToInvite([...emailsToInvite, email]);
-
-    event.currentTarget.reset();
-  }
+      if (email && !emailsToInvite.includes(email)) {
+        setEmailsToInvite((prevEmails) => [...prevEmails, email]);
+        event.currentTarget.reset();
+      }
+    },
+    [emailsToInvite]
+  );
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: createTrip,
   });
 
-  async function startTrip(event: React.FormEvent<HTMLFormElement>) {
-    event?.preventDefault();
-    try {
-      const res = await mutateAsync({
-        destination: destination,
-        starts_at: eventStartAndEndDates?.from!.toString() ?? '',
-        ends_at: eventStartAndEndDates?.to!.toString() ?? '',
-        owner_name: ownerName,
-        owner_email: ownerEmail,
-        emails_to_invite: emailsToInvite,
-      });
-      navigate(`/trips/${res.tripId}`);
-    } catch (error) {
-      if (error instanceof AxiosError && error.response?.data) {
-        const errorMessage = error.response.data.error;
-        toast({
-          title: 'There was an error creating the trip',
-          description: errorMessage,
+  const startTrip = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      try {
+        const res = await mutateAsync({
+          destination,
+          starts_at: eventStartAndEndDates?.from?.toString() ?? '',
+          ends_at: eventStartAndEndDates?.to?.toString() ?? '',
+          owner_name: ownerName,
+          owner_email: ownerEmail,
+          emails_to_invite: emailsToInvite,
         });
+        navigate(`/trips/${res.tripId}`);
+      } catch (error) {
+        if (error instanceof AxiosError && error.response?.data) {
+          const errorMessage = error.response.data.error;
+          toast({
+            title: 'There was an error creating the trip',
+            description: errorMessage,
+          });
+        }
       }
+    },
+    [
+      destination,
+      eventStartAndEndDates,
+      ownerName,
+      ownerEmail,
+      emailsToInvite,
+      mutateAsync,
+      navigate,
+    ]
+  );
+
+  const handleFirstStep = useCallback(() => {
+    if (destination && eventStartAndEndDates) {
+      setIsDestinationAndDate(true);
     }
-  }
+  }, [destination, eventStartAndEndDates]);
 
-  function openConfirmTripModal() {
-    setIsConfirmationModalOpen(true);
-  }
-
-  function closeConfirmTripModal() {
-    setIsConfirmationModalOpen(false);
-  }
-
-  function closeGuestModal() {
-    setIsGuestsInputOpen(false);
-  }
-
-  function openGuestModal() {
-    setIsGuestsInputOpen(true);
-  }
-
-  function handleFirstStep() {
-    if (!destination || !eventStartAndEndDates) {
-      return;
-    }
-
-    setIsDestinationAndDate(true);
-  }
-
-  function goBackFirstStep() {
+  const goBackFirstStep = useCallback(() => {
     setIsDestinationAndDate(false);
-  }
+  }, []);
 
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-6 px-4 sm:flex-row">
-      <div className="w-full max-w-3xl space-y-6 px-6 ">
+      <div className="w-full max-w-3xl space-y-6 px-6">
         <header className="space-y-4">
           <h1 className="text-center text-2xl">
             Welcome to travel manager app
@@ -145,35 +132,26 @@ export function CreateTripPage() {
                 </Button>
               )}
             </div>
-            {/* <div className="flex w-full gap-2">
-            <Label htmlFor="emails" className="w-full">
-              <Input
-                id="emails"
-                placeholder={`${emailsToInvite.length} people invited`}
-              />
-            </Label>
-            <Button type="button">Add emails</Button>
-          </div> */}
             {isDestinationAndDate && (
               <div className="flex items-center gap-3 rounded-xl">
                 <button
                   type="button"
-                  onClick={openGuestModal}
+                  onClick={() => setIsGuestsInputOpen(true)}
                   className="flex flex-1 items-center gap-2 rounded-md border px-4 py-2 text-left text-sm"
                 >
                   <UserRoundPlus className="size-5 text-zinc-400" />
                   {emailsToInvite.length > 0 ? (
-                    <span className="flex-1  text-zinc-100">
+                    <span className="flex-1 text-zinc-100">
                       {emailsToInvite.length} people invited
                     </span>
                   ) : (
-                    <span className="flex-1  text-zinc-400">
+                    <span className="flex-1 text-zinc-400">
                       Who are you inviting?
                     </span>
                   )}
                 </button>
 
-                <Button onClick={openConfirmTripModal}>
+                <Button onClick={() => setIsConfirmationModalOpen(true)}>
                   Confirm trip
                   <ArrowRight className="size-5" />
                 </Button>
@@ -184,7 +162,7 @@ export function CreateTripPage() {
         {isGuestsInputOpen && (
           <InviteParticipants
             emailsToInvite={emailsToInvite}
-            closeGuestsModal={closeGuestModal}
+            closeGuestsModal={() => setIsGuestsInputOpen(false)}
             addNewEmailToInvite={addNewEmailToInvite}
             removeEmailFromInvites={(email) => {
               setEmailsToInvite(emailsToInvite.filter((e) => e !== email));
@@ -197,7 +175,7 @@ export function CreateTripPage() {
             destination={destination}
             createTrip={startTrip}
             isPending={isPending}
-            closeConfirmTripModal={closeConfirmTripModal}
+            closeConfirmTripModal={() => setIsConfirmationModalOpen(false)}
             setOwnerEmail={setOwnerEmail}
             setOwnerName={setOwnerName}
           />
