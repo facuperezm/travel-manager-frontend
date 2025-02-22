@@ -33,7 +33,6 @@ I chose these technologies to build a robust and maintainable application:
 ## Key Features
 
 - ✈️ Trip planning and organization
-- 💰 Expense tracking
 - 📅 Itinerary management
 - 🔒 Secure user authentication
 - 📱 Responsive design
@@ -55,7 +54,6 @@ I'm planning to add:
 - [ ] Budget analytics and reports
 - [ ] Multi-language support
 - [ ] Trip sharing with friends
-- [ ] Mobile app version
 - [ ] Email notifications
 
 ## Getting Started
